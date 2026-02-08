@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+let teste;
+teste = "Rafa";
+teste = 45;
+teste = true;
+let cursos = ["javascript", "typescript", "C++", 3, false];
+let valores = [10, 200, 2026];
+cursos.push("Arduino");
+valores.push(500);
+console.log(cursos);
+console.log(valores);
+console.log(teste);

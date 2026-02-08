@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+let nome;
+nome = "rafa";
+console.log(nome);
+let nome2;
+console.log(nome2);
+let nome3 = nome;
+let num = nome3;
+console.log(num);
