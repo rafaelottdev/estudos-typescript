@@ -1,16 +1,18 @@
-// POO 3
+// POO 4
 
 class Computador {
-    nome: string = "Computador 1"
-    ram: number = 0
-    cpu: number = 0
-    ligado: boolean = false
+    private id: number
+    public nome: string
+    private ram: number
+    private cpu: number
+    protected ligado: boolean
 
     constructor(nome: string, ram: number, cpu: number) {
         this.nome = nome
         this.ram = ram
         this.cpu = cpu
         this.ligado = false
+        this.id = 0
     }
 
     info(): void {
@@ -28,6 +30,16 @@ class Computador {
     desligar(): void {
         this.ligado = false
     }
+
+    upRam(qtde: number): void {
+        if(qtde >= 0 && qtde <= 1000) {
+            this.ram = qtde
+        }
+
+        else {
+            console.log(`Quantidade de ${qtde} para o ${this.nome} não é permitido`)
+        }
+    }
 }
 
 // Instanciar
@@ -37,7 +49,10 @@ const c3 = new Computador("Gamer", 128, 10)
 
 c1.ligar()
 c3.ligar()
-c1.desligar()
+
+c1.upRam(128)
+
+c1.nome = "Super Rapidão"
 
 c1.info()
 c2.info()
