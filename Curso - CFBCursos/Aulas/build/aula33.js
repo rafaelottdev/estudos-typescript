@@ -7,7 +7,7 @@ var Veiculos;
         motor;
         constructor(nome) {
             this.nome = nome;
-            this.motor = new Motores.Motor(100);
+            this.motor = new Motores.Motor(3, 100);
         }
     }
     Veiculos.Carro = Carro;
@@ -19,11 +19,27 @@ var Motores;
         constructor(pot) {
             this.pot = pot;
         }
+        get potencia() {
+            return this.pot;
+        }
     }
     class Motor {
+        ligado;
+        cilindros;
         pot;
-        constructor(pot) {
-            this.pot = pot;
+        constructor(cilindros, pot, turbo) {
+            this.ligado = false;
+            this.cilindros = cilindros;
+            this.pot = pot + (turbo ? turbo.potencia : 0);
+        }
+        set liga(ligado) {
+            this.ligado = ligado;
+        }
+        get liga() {
+            return this.ligado;
+        }
+        get potencia() {
+            return this.pot;
         }
     }
     Motores.Motor = Motor;
