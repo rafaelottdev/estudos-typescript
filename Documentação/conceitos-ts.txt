@@ -1,0 +1,532 @@
+Type aliases (type)
+    Em TypeScript, type aliases (type) são uma forma de criar um nome para um tipo.
+    Em vez de repetir estruturas complexas, você define um "apelido" para aquele tipo.
+
+    type User = {
+        name: string
+        age: number
+    }
+
+    Agora você pode usar User como se fosse um tipo nativo:
+
+    const person: User = {
+        name: "Rafael",
+        age: 25
+    }
+
+    Objetos:
+    type Product = {
+        id: number
+        title: string
+    }
+
+    Union Types:
+    type Status = "loading" | "success" | "error"
+    let currentStatus: Status
+    currentStatus = "loading"
+
+    Tipos primitivos:
+    type ID = string | number
+
+    Funções:
+    type Sum = (a: number, b: number) => number
+    const add: Sum = (a, b) => a + b
+
+    Diferença comum vs interface
+    Ambos criam tipos parecidos:
+    type User = { name: string }
+    interface User { name: string }
+
+    type
+    Mais flexível (union, intersection, primitives, etc.)
+
+    interface
+    Melhor para extensão / orientação a objeto
+
+    Regra prática:
+    Estruturas → geralmente interface
+    Composição / unions / utilidades → geralmente type
+
+-----------------------------------------------------------------------------------------------------------
+
+interface
+    Em TypeScript, interface é usada para definir a forma (estrutura) de um objeto.
+    Ela descreve quais propriedades existem e seus tipos, funcionando como um contrato.
+
+    interface User {
+        name: string
+        age: number
+    }
+
+    const person: User = {
+        name: "Ana",
+        age: 30
+    }
+
+    Propriedades opcionais (?):
+    interface User {
+        name: string
+        age?: number
+    }
+
+    Propriedades readonly:
+    interface User {
+        readonly id: number
+        name: string
+    }
+
+    Métodos:
+    interface User {
+        name: string
+        greet(): void
+    }
+
+    ou
+
+    interface User {
+        name: string
+        greet: () => void
+    }
+
+    Extensão (Herança):
+    interface Person {
+        name: string
+    }
+
+    interface Employee extends Person {
+        salary: number
+    }
+
+    Resultado
+    const dev: Employee = {
+        name: "Carlos",
+        salary: 5000
+    }
+
+    Interface com funções:
+    interface Sum {
+        (a: number, b: number): number
+    }
+
+    const add: Sum = (a, b) => a + b
+
+    Declaration Merging:
+    interface User {
+        name: string
+    }
+
+    interface User {
+        age: number
+    }
+
+    typescript junta
+    interface User {
+        name: string
+        age: number
+    }
+
+    Implementando em classes:
+    interface Animal {
+        name: string
+        makeSound(): void
+    }
+
+    class Dog implements Animal {
+        name: string
+
+        constructor(name: string) {
+            this.name = name
+        }
+
+        makeSound() {
+            console.log("Woof")
+        }
+    }
+
+-----------------------------------------------------------------------------------------------------------
+
+type ou interface
+    Estruturas → geralmente interface
+    Composição / unions / utilidades → geralmente type
+
+    Quando usar interface
+        Interfaces são pensadas para modelar estruturas de objetos.
+
+        Muito comum em:
+        Modelos de dados
+        Props de componentes (React / Vue)
+        Contratos de API
+        Classes
+
+        Elas têm vantagens importantes: 
+        Extensão (herança)
+        interface Person {
+            name: string
+        }
+
+        interface Employee extends Person {
+            salary: number
+        }
+
+        Merge automático (Declaration Merging)
+        Se declarar duas interfaces com o mesmo nome:
+        interface User {
+            name: string
+        }
+
+        interface User {
+            age: number
+        }
+
+        O TypeScript junta:
+        interface User {
+            name: string
+            age: number
+        }
+
+        Resumo mental:
+        Se você está descrevendo um objeto que representa algo, interface costuma ser mais semântico.
+
+    Quando usar type
+        type é mais flexível. Ele não serve só para objetos.
+
+        É ideal para:
+
+        Union types
+        Intersection types
+        Tipos primitivos compostos
+        Tipos derivados / utilitários
+        Funções
+        Mapeamentos complexos
+
+        Intersection Types
+        type Person = { name: string }
+        type Employee = Person & { salary: number }
+        Muito comum em composição.
+
+        Tipos primitivos
+        type ID = string | number
+        Interface não suporta.
+
+        Funções
+        type Callback = (value: string) => void
+
+        Resumo mental:
+        Se você está combinando tipos, criando regras, estados, variações → type.
+
+    Regra prática REALISTA (projetos reais)
+        Prefira interface quando:
+        Estruturas de objetos principais
+        Models / entidades
+        Props / contratos claros
+        Algo que pode ser estendido
+
+        Prefira type quando:
+        Union (|)
+        Intersection (&)
+        Tipos derivados
+        Alias de primitivos
+        Funções
+        Tipos utilitários (Partial, Pick, etc.)
+
+-----------------------------------------------------------------------------------------------------------
+
+namespace
+    Em TypeScript, um namespace é uma forma de organizar e agrupar código relacionado (como funções, interfaces, classes, variáveis) sob um mesmo “nome”, evitando conflitos de nomes.
+
+    Ele é uma solução de modularização interna, usada antes do padrão moderno de módulos ES (import/export).
+
+    Exemplo básico:
+        namespace MathUtils {
+            export function sum(a: number, b: number): number {
+                return a + b
+            }
+
+            export function multiply(a: number, b: number): number {
+                return a * b
+            }
+        }
+
+        Para usar fora do namespace, precisa do prefixo + export:
+        const total = MathUtils.sum(2, 3)
+        console.log(total) // 5
+
+        Se não tivesse export, a função não estaria acessível fora do namespace.
+
+    Por que usar namespace: Evitar conflitos de nomes e Agrupar lógica relacionada
+
+    Namespaces com interfaces e tipos:
+        namespace UserNS {
+            export interface User {
+                name: string
+                age: number
+            }
+
+            export type ID = string | number
+        }
+
+        const user: UserNS.User = { name: "Ana", age: 25 }
+
+    Diferença para módulos (import/export):
+        Namespace	                 Módulo ES
+        Declaração interna TS	     Arquivo separado
+        Usado com namespace	         Usado com import/export
+        Permite merge	             Não permite merge
+        Código compilado junto	     Código separado
+
+        Hoje, em projetos modernos, é mais comum usar módulos.
+        Namespaces ainda aparecem em bibliotecas antigas ou quando você quer manter tudo num único arquivo global.
+
+        Regra prática:
+            Use namespace quando
+            Precisa agrupar tipos/funções relacionados
+            Quer evitar poluir o escopo global
+            Não quer criar vários arquivos
+
+            Evite
+            Projetos modernos grandes → prefira módulos ES (import/export)
+
+-----------------------------------------------------------------------------------------------------------
+
+Type assertions (as, <type>)
+    Type Assertions em TypeScript são uma forma de dizer ao compilador qual é o tipo de um valor, mesmo que ele não consiga inferir sozinho.
+
+    Sintaxe (as)
+    Forma mais comum e recomendada:
+    const input = document.querySelector("input") as HTMLInputElement
+
+    Aqui você está dizendo:
+
+    O TS acha que pode ser Element | null
+    Você afirma que é HTMLInputElement
+
+-----------------------------------------------------------------------------------------------------------
+
+satisfies operator
+    O satisfies operator em TypeScript é usado para validar que um valor atende a um tipo, sem mudar o tipo inferido do valor.
+    Ele verifica compatibilidade, mas não faz cast.
+
+    Usando satisfies:
+        const config = {
+            theme: "dark"
+        } satisfies Config
+
+    Agora:
+        TS valida que é compatível com Config
+        MAS mantém "dark" como literal
+
+    Exemplo prático:
+        type Theme = "dark" | "light"
+
+        type Config = {
+            theme: Theme
+        }
+
+        const config = {
+            theme: "dark"
+        } satisfies Config
+
+    Outro caso comum (objetos grandes):
+        type Routes = {
+            home: string
+            about: string
+        }
+
+        const routes = {
+            home: "/",
+            about: "/about"
+        } satisfies Routes
+
+        Garante estrutura correta
+        Mantém valores literais
+
+-----------------------------------------------------------------------------------------------------------
+
+keyof
+    Em TypeScript, o operador keyof é usado para pegar todas as chaves de um tipo de objeto e criar um tipo com essas chaves.Basicamente, ele transforma as propriedades de um objeto em um tipo literal.
+
+    Exemplo básico:
+        interface User {
+            name: string
+            age: number
+            isAdmin: boolean
+        }
+
+        type UserKeys = keyof User
+
+        Aqui, UserKeys será equivalente a:
+        type UserKeys = "name" | "age" | "isAdmin"
+
+        Ou seja, um union type com todas as chaves do objeto.
+
+    Uso prático:
+        function getValue(obj: User, key: keyof User) {
+            return obj[key]
+        }
+
+        const user: User = { name: "Ana", age: 25, isAdmin: true }
+
+        getValue(user, "name") // "Ana"
+        getValue(user, "age") // 25
+
+-----------------------------------------------------------------------------------------------------------
+
+tsconfig.json
+    O tsconfig.json é o arquivo de configuração do TypeScript que define como o compilador (tsc) deve interpretar e compilar o seu código. Ele basicamente diz:
+
+    Quais arquivos incluir/excluir do projeto.
+    Quais regras de compilação aplicar.
+    Qual versão do JavaScript gerar.
+    Como lidar com módulos e caminhos de importação.
+
+    Sem ele, o TypeScript tentaria compilar tudo na pasta, usando padrões genéricos.
+
+    Estrutura básica:
+        {
+            "compilerOptions": {
+                "target": "ES6",                  
+                "module": "commonjs",             
+                "strict": true,                   
+                "outDir": "./dist",               
+                "rootDir": "./src",               
+                "esModuleInterop": true,          
+                "forceConsistentCasingInFileNames": true
+            },
+            "include": ["src"],                 
+            "exclude": ["node_modules", "**/*.test.ts"]
+        }
+
+    compilerOptions: Configura como o TypeScript deve compilar o código:
+        Opção	                            O que faz
+        target	                            Define a versão do JavaScript que o TypeScript irá gerar (ES5, ES6, ESNext)
+        module	                            Tipo de módulo (commonjs, ESNext, AMD) usado no output
+        strict	                            Ativa todas as verificações rigorosas de tipo
+        outDir	                            Pasta onde o JS compilado será gerado
+        rootDir	                            Pasta raiz do código-fonte TypeScript
+        esModuleInterop	                    Permite importações de módulos CommonJS de forma compatível com ES6
+        forceConsistentCasingInFileNames	Evita problemas de maiúsculas/minúsculas em arquivos
+
+    include:
+        Define quais arquivos o TypeScript deve incluir na compilação.
+        "include": ["src"]
+        Significa: compile todos os arquivos .ts dentro de src.
+
+    exclude:
+        Define quais arquivos ou pastas ignorar.
+        "exclude": ["node_modules", "**/*.test.ts"]
+        Significa: ignore dependências externas e arquivos de teste.
+
+    Outras opções úteis:
+        Opção	            O que faz
+        noImplicitAny	    Gera erro se algum tipo for any implicitamente
+        strictNullChecks	Trata null e undefined como tipos separados
+        baseUrl	            Define a base para caminhos de importação relativos
+        paths	            Permite criar aliases de importação (@components/*)
+        sourceMap	        Gera arquivos .map para debug no navegador
+
+    Exemplo de paths:
+        {
+            "compilerOptions": {
+                "baseUrl": "./src",
+                "paths": {
+                "@components/*": ["components/*"],
+                "@utils/*": ["utils/*"]
+                }
+            }
+        }
+
+        Isso permite importar de forma limpa:
+        import Button from "@components/Button";
+
+    Comandos relacionados: 
+        Compilar com base no tsconfig.json:
+        tsc
+
+        Verificar apenas erros (sem gerar JS):
+        tsc --noEmit
+
+        Criar um tsconfig.json padrão:
+        tsc --init
+
+    Dicas práticas:
+        Sempre use strict: true para pegar mais erros cedo.
+        Defina outDir e rootDir para manter o JS compilado separado do TS.
+        Use paths + baseUrl para facilitar importações complexas.
+        Ignore node_modules e arquivos de teste em exclude.
+
+    Para projetos React:
+        {
+            "compilerOptions": {
+                "target": "ES6",                          
+                "lib": ["DOM", "DOM.Iterable", "ESNext"], 
+                "allowJs": false,                         
+                "skipLibCheck": true,                     
+                "esModuleInterop": true,                  
+                "allowSyntheticDefaultImports": true,    
+                "strict": true,                           
+                "forceConsistentCasingInFileNames": true,
+                "noFallthroughCasesInSwitch": true,      
+                "module": "ESNext",                       
+                "moduleResolution": "Node",               
+                "resolveJsonModule": true,                
+                "isolatedModules": true,                  
+                "noEmit": true,                           
+                "jsx": "react-jsx",                        
+                "baseUrl": "src",                         
+                "paths": {                                
+                "@components/*": ["components/*"],     
+                "@pages/*": ["pages/*"],               
+                "@utils/*": ["utils/*"],               
+                "@assets/*": ["assets/*"]              
+                }
+            },
+            "include": ["src"],                         
+            "exclude": ["node_modules", "build"]        
+        }
+
+        Explicando as principais opções:
+            target: "ES6" → Gera código compatível com browsers modernos.
+            lib: ["DOM", "DOM.Iterable", "ESNext"] → Permite APIs modernas do navegador + ESNext.
+            strict: true → Ativa todas as verificações rigorosas de tipos.
+            module: "ESNext" e moduleResolution: "Node" → Para suportar imports ES Modules e resolução de pacotes Node.
+            jsx: "react-jsx" → Usado com React 17+ para a nova transformação JSX.
+            noEmit: true → O TypeScript não gera JS (útil com Vite ou CRA que lidam com build).
+            baseUrl + paths → Permite imports limpos, tipo import Button from "@components/Button";.
+
+-----------------------------------------------------------------------------------------------------------
+
+Montar o ambiente typescript (passo a passo):
+    ter o vscode
+    (para o backend) instalar o Node: verificar se esta instalado (node -v)
+
+    instalar o typescript em um projeto especifico/individual: npm install typescript --save-dev
+    fazer a instalação de forma global, para que qualquer projeto possa utilizar typescript: npm install -g typescript
+
+    verificar a versão do typescript: tsc --version
+
+    extensões para o vscode: JavaScript and TypeScript Nightly (Microsoft), live server, Material Icon Theme (opcional)
+
+    criar uma pasta para o projeto e abrir no vscode
+
+    Para compilar manualmente e atualizar (gerar/atualizar um arquivo .js): tsc nomeArquivo.ts
+
+    Para rodar o arquivo vá para a pasta que esta os arquivos .js e digite no terminal: node nomeArquivo.js
+
+    criar o arquivo de configuração (tsconfig.json), no terminal digite: tsc --init
+        No arquivo definir "target" como "ESNEXT": "target": "ESNext" <- utiliza a ultima versão do js
+        Descomentar ou adicionar removeComments: "removeComments": true <- remove os comentarios do .js
+        Descomentar ou Adicionar o outDir (onde vai ficar os arquivos .js): "outDir": "./build" <- geralmente chamado de build
+        Descomentar ou Adicionar o rootDir (onde vai ficar os arquivos .ts): "rootDir": "./src" <- geralmente chamado de src
+        ** É necessario criar as pastas build e src manualmente
+
+    Para compilar todos os arquivos .ts em .js digite no terminal: tsc 
+
+    Por ultimo, para atualizar e criar um arquivo js sempre que um arquivo ts for criado ou modificado é preciso utilizar o seguinte comando no terminal: tsc --watch ou tsc -w
+
+-----------------------------------------------------------------------------------------------------------
+
+Outros Temas:
+    // Method overloads (class)
+    // Mapped types
+    // Utility types (Partial, Pick, Omit, etc.)
+    // Strict mode options
