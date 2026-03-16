@@ -1,0 +1,67 @@
+.user {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    border-radius: 1rem;
+    background-color: #2b3566;
+}
+
+.user img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 4px solid #644aff;
+}
+
+.user a {
+    padding: 1rem;
+    text-align: center;
+    opacity: .8;
+    border-radius: 5px;
+    background-color: #644aff;
+    transition: .3s;
+}
+
+.user a:hover {
+    opacity: 1;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+}
+
+.location svg {
+    fill: #4ed8c7;
+    font-size: 1.5rem;
+}
+
+.location span {
+    color: #9da5d1;
+    font-weight: bold;
+}
+
+.status {
+    display: flex;
+}
+
+.status div {
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+}
+
+.status div:first-child {
+    border-right: 1px solid #9da5d1;
+}
+
+.number {
+    padding: .2rem .4rem;
+    border-radius: 3px;
+    background-color: #4ed8c7;
+}
