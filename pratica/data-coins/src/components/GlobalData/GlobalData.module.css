@@ -1,0 +1,41 @@
+.globalInfo_Section {
+    margin-bottom: 30px;
+    
+    font-size: .9em;
+}
+
+.globalInfo_list {
+    display: flex;
+    gap: 15px;
+}
+
+.globalInfo_item {
+    display: flex;
+    gap: 5px;
+}
+
+.globalInfo_item > p {
+    opacity: .8;
+    letter-spacing: .5px;
+}
+
+.globalInfo_item_wrapp {
+    font-weight: bold;
+    opacity: .9;
+}
+
+.globalInfo_item_list {
+    display: flex;
+    gap: 6px;
+
+    font-weight: bold;
+    opacity: .9;
+}
+
+.negative_porcentage {
+    color: red;
+}
+
+.positive_porcentage {
+    color: green;
+}
